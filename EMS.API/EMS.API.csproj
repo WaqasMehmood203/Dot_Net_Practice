@@ -20,4 +20,8 @@
 
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Dtos\Addresses\" />
+	</ItemGroup>
+
 </Project>

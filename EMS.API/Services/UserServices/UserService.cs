@@ -64,8 +64,8 @@ namespace EMS.API.Services.UserServices
                 {
                     existingAddress.HomeAddress = user.Address.HomeAddress;
                     existingAddress.CurrentAddress = user.Address.CurrentAddress;
-                    existingAddress.CityCode = user.Address.CityCode;
-                    existingAddress.CountyCode = user.Address.CountyCode;
+                    //existingAddress.CityCode = user.Address.CityCode;
+                    //existingAddress.CountyCode = user.Address.CountyCode;
                     existingAddress.City = user.Address.City;
                     existingAddress.Country = user.Address.Country;
                     existingAddress.State = user.Address.State;

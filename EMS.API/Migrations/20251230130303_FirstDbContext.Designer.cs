@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.API.Migrations
 {
     [DbContext(typeof(LogsDbContext))]
-    [Migration("20251222130120_FirstLogDb")]
-    partial class FirstLogDb
+    [Migration("20251230130303_FirstDbContext")]
+    partial class FirstDbContext
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,17 +31,11 @@ namespace EMS.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("CityId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CityCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CountyCode")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CountryId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CurrentAddress")
                         .HasColumnType("nvarchar(max)");
@@ -49,8 +43,8 @@ namespace EMS.API.Migrations
                     b.Property<string>("HomeAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("StateId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StreetNumber")
                         .HasColumnType("nvarchar(max)");
@@ -60,10 +54,40 @@ namespace EMS.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CityId")
+                        .IsUnique()
+                        .HasFilter("[CityId] IS NOT NULL");
+
+                    b.HasIndex("CountryId")
+                        .IsUnique()
+                        .HasFilter("[CountryId] IS NOT NULL");
+
+                    b.HasIndex("StateId")
+                        .IsUnique()
+                        .HasFilter("[StateId] IS NOT NULL");
+
                     b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.City", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CityCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.ContactInformation", b =>
@@ -95,6 +119,24 @@ namespace EMS.API.Migrations
                     b.ToTable("ContactInformations");
                 });
 
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.Country", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("CountryCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.LoggedInUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -119,6 +161,21 @@ namespace EMS.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LoggedInUsers");
+                });
+
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.State", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.User", b =>
@@ -164,11 +221,29 @@ namespace EMS.API.Migrations
 
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.Address", b =>
                 {
+                    b.HasOne("EMS.API.Entities.DB2_Entities.City", "City")
+                        .WithOne("Address")
+                        .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "CityId");
+
+                    b.HasOne("EMS.API.Entities.DB2_Entities.Country", "Country")
+                        .WithOne("Address")
+                        .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "CountryId");
+
+                    b.HasOne("EMS.API.Entities.DB2_Entities.State", "State")
+                        .WithOne("Address")
+                        .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "StateId");
+
                     b.HasOne("EMS.API.Entities.DB2_Entities.User", "User")
                         .WithOne("Address")
                         .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("State");
 
                     b.Navigation("User");
                 });
@@ -184,13 +259,26 @@ namespace EMS.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.City", b =>
+                {
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.Country", b =>
+                {
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.State", b =>
+                {
+                    b.Navigation("Address");
+                });
+
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.User", b =>
                 {
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
 
-                    b.Navigation("ContactInformation")
-                        .IsRequired();
+                    b.Navigation("ContactInformation");
                 });
 #pragma warning restore 612, 618
         }

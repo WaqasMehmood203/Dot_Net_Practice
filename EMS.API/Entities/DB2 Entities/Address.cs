@@ -9,12 +9,14 @@ namespace EMS.API.Entities.DB2_Entities
         public Guid Id { get; set; }
         public string? HomeAddress { get; set; }
         public string? CurrentAddress { get; set; }
-        public int CityCode { get; set; }
-        public int CountyCode { get; set; }
-        public string? City { get; set; }
-        public string? Country { get; set; }
-        public string? State { get; set; }
         public string? StreetNumber { get; set; }
+
+        public Guid? CountryId { get; set; }
+        public Country? Country { get; set; }
+        public Guid? CityId { get; set; }
+        public City? City { get; set; }
+        public Guid? StateId { get; set; }
+        public State? State { get; set; }
         [JsonIgnore]
         public Guid UserId {  get; set; }
         [JsonIgnore]
