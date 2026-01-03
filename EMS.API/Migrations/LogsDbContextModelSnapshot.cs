@@ -55,9 +55,7 @@ namespace EMS.API.Migrations
                         .IsUnique()
                         .HasFilter("[CityId] IS NOT NULL");
 
-                    b.HasIndex("CountryId")
-                        .IsUnique()
-                        .HasFilter("[CountryId] IS NOT NULL");
+                    b.HasIndex("CountryId");
 
                     b.HasIndex("StateId")
                         .IsUnique()
@@ -122,16 +120,59 @@ namespace EMS.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Capital")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Continent")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("CountryCode")
                         .HasColumnType("int");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Population")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.Department", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("HeadOfDepartment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("Students")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("Teachers")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Uiversity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UniversityNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.LoggedInUser", b =>
@@ -223,8 +264,8 @@ namespace EMS.API.Migrations
                         .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "CityId");
 
                     b.HasOne("EMS.API.Entities.DB2_Entities.Country", "Country")
-                        .WithOne("Address")
-                        .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "CountryId");
+                        .WithMany()
+                        .HasForeignKey("CountryId");
 
                     b.HasOne("EMS.API.Entities.DB2_Entities.State", "State")
                         .WithOne("Address")
@@ -257,11 +298,6 @@ namespace EMS.API.Migrations
                 });
 
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.City", b =>
-                {
-                    b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.Country", b =>
                 {
                     b.Navigation("Address");
                 });

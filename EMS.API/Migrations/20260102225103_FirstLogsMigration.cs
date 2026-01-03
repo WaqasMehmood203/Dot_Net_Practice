@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EMS.API.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstDbContext : Migration
+    public partial class FirstLogsMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,11 +30,32 @@ namespace EMS.API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CountryCode = table.Column<int>(type: "int", nullable: true)
+                    Continent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Capital = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Population = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CountryCode = table.Column<int>(type: "int", nullable: true),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Students = table.Column<long>(type: "bigint", nullable: true),
+                    Teachers = table.Column<long>(type: "bigint", nullable: true),
+                    HeadOfDepartment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Uiversity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UniversityNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,9 +185,7 @@ namespace EMS.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CountryId",
                 table: "Addresses",
-                column: "CountryId",
-                unique: true,
-                filter: "[CountryId] IS NOT NULL");
+                column: "CountryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_StateId",
@@ -196,6 +215,9 @@ namespace EMS.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "ContactInformations");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "LoggedInUsers");

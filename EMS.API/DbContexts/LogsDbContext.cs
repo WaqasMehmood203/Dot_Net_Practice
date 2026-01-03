@@ -17,6 +17,7 @@ namespace EMS.API.DbContexts
         public DbSet<UserLogHistory> UserLogHistories { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ContactInformation> ContactInformations { get; set; }
+        public DbSet<Department> Departments { get; set; }
 
     }
 }
