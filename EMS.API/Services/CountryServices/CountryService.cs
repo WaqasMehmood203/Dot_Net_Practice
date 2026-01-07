@@ -18,7 +18,7 @@ namespace EMS.API.Services.CountryServices
         public async Task<CountryReadDto> CreateAsync(CountryCreateDto dto)
         {
             var entity = _mapper.Map<Country>(dto);
-            entity.Id = Guid.NewGuid();
+            entity.Id =     Guid.NewGuid();
             _context.Countries.Add(entity);
             await _context.SaveChangesAsync();
 

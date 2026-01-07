@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EMS.API.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstLogsMigration : Migration
+    public partial class FirstMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,10 @@ namespace EMS.API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CityCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CityCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Downtown = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Population = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -178,9 +181,7 @@ namespace EMS.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CityId",
                 table: "Addresses",
-                column: "CityId",
-                unique: true,
-                filter: "[CityId] IS NOT NULL");
+                column: "CityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CountryId",

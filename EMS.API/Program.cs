@@ -4,6 +4,7 @@ using EMS.API.Services.CountryServices;
 using EMS.API.Services.EmployeeServices;
 using EMS.API.Services.TeacherService;
 using EMS.API.Services.UserServices;
+using EMS.API.Services.CityServices;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using EMS.API.Services.DepartmentServices;
@@ -15,6 +16,7 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+builder.Services.AddScoped<ICityService, CityService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

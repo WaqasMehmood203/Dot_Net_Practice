@@ -51,9 +51,7 @@ namespace EMS.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId")
-                        .IsUnique()
-                        .HasFilter("[CityId] IS NOT NULL");
+                    b.HasIndex("CityId");
 
                     b.HasIndex("CountryId");
 
@@ -76,9 +74,18 @@ namespace EMS.API.Migrations
                     b.Property<string>("CityCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Downtown")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("Population")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -260,8 +267,8 @@ namespace EMS.API.Migrations
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.Address", b =>
                 {
                     b.HasOne("EMS.API.Entities.DB2_Entities.City", "City")
-                        .WithOne("Address")
-                        .HasForeignKey("EMS.API.Entities.DB2_Entities.Address", "CityId");
+                        .WithMany()
+                        .HasForeignKey("CityId");
 
                     b.HasOne("EMS.API.Entities.DB2_Entities.Country", "Country")
                         .WithMany()
@@ -295,11 +302,6 @@ namespace EMS.API.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EMS.API.Entities.DB2_Entities.City", b =>
-                {
-                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("EMS.API.Entities.DB2_Entities.State", b =>

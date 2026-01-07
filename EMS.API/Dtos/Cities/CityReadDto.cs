@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-
-namespace EMS.API.Entities.DB2_Entities
+﻿namespace EMS.API.Dtos.Cities
 {
-    public class City
+    public class CityReadDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -10,7 +8,5 @@ namespace EMS.API.Entities.DB2_Entities
         public string? Downtown { get; set; }
         public string? Country { get; set; }
         public long? Population { get; set; }
-        //[JsonIgnore]
-        //public Address? Address { get; set; }
     }
 }
